@@ -25,6 +25,8 @@ Chrome DevTools Protocol drives actual pointer and keyboard events against the p
 
 Screenshots in this directory are real browser captures. No uncaught JavaScript exceptions were observed in the completed test runs.
 
+The final production-preview run completed all **32 checkpoints in 66.68 seconds**, with lap times **34.55 / 32.13 seconds** and no recovery penalty. Its saved time was unchanged after a full page reload. The interaction suite passed **18 browser assertions**, including the landscape fallback, and all **12 simulation tests** passed.
+
 ## Practical limits
 
 Mobile layout and touch-style pointer input were tested in Chrome viewport emulation, not on a physical iPhone or Android handset. Fullscreen and orientation-lock availability depend on the browser, so a manual-rotation fallback is included. Web Audio startup and mute state were checked; audio was not evaluated through a physical speaker setup. Frame rate varies with GPU, browser and display resolution. This is arcade handling, not a real-world vehicle dynamics validation.
