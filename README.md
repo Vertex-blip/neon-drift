@@ -4,7 +4,7 @@
 
 The native Godot edition now has **10 licensed 3D cars**, a **3.3 km circuit**, reverse gear, an orbiting garage camera, and four modes. It runs as a desktop game; the browser edition remains playable online.
 
-[**Play the web edition →**](https://vertex-blip.github.io/neon-drift/) · [**Open the Godot project →**](godot/project.godot) · [**See art credits →**](godot/CREDITS.md)
+[**Play on phone or browser →**](https://vertex-blip.github.io/neon-drift/) · [**Download Windows game →**](https://github.com/Vertex-blip/neon-drift/releases/download/v0.2.0-native-preview/NeonDrift-Windows.zip) · [**Open Godot source →**](godot/project.godot)
 
 ![Native Godot garage with the Lamborghini Revuelto](godot/docs/godot-garage.png)
 
@@ -20,6 +20,8 @@ The native Godot edition now has **10 licensed 3D cars**, a **3.3 km circuit**, 
 The garage lets you switch among ten detailed models, choose a paint finish, and drag with a mouse or finger to rotate the view. Driving supports keyboard, gamepad and landscape touch controls. Reverse engages by holding brake after stopping. The native version includes handbrake slip, tyre smoke, brake lights, chase cameras, local records, and synthesized engine, wind and tyre audio.
 
 To run from source, open [`godot/project.godot`](godot/project.godot) in **Godot 4.7.2** and press **F6** or **F5**. The project has Windows and Android export presets. The Android preset is prepared but an APK has not been tested on a physical device.
+
+On a phone, open the web link in a browser, rotate to landscape and tap **Take the Wheel**. This currently launches the earlier browser edition with one car and two modes. The expanded ten-car Godot edition is available as the Windows download and source project; it does not yet have an Android APK.
 
 | Native control | Action |
 | --- | --- |
