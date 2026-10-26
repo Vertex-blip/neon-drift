@@ -1,5 +1,7 @@
 # Art, software and audio credits
 
+The native Godot edition has additional car and scenery credits in [godot/CREDITS.md](godot/CREDITS.md).
+
 ## Vehicle
 
 **Ferrari 458 Italia** by **vicent091036**. CC BY 4.0.

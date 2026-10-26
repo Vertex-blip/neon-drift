@@ -1,0 +1,7 @@
+.godot/
+*.tmp
+build/
+*.log
+*.import
+assets/ferrari.glb
+docs/car-*.png

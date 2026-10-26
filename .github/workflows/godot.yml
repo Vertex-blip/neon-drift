@@ -1,0 +1,26 @@
+name: Godot native checks
+
+on:
+  push:
+    paths:
+      - "godot/**"
+      - ".github/workflows/godot.yml"
+  pull_request:
+    paths:
+      - "godot/**"
+      - ".github/workflows/godot.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.7.2
+        run: |
+          curl -fL --retry 3 -o godot.zip https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.2-stable_linux.x86_64
+      - name: Import assets
+        run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path godot --editor --quit
+      - name: Drive smoke test
+        run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path godot --script res://tests/smoke.gd

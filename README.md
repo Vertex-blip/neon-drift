@@ -1,6 +1,40 @@
 # NEON DRIFT
 
-**One car. An empty coastal road. Find your line.**
+**A coastal driving game for Godot and the browser.**
+
+The native Godot edition now has **10 licensed 3D cars**, a **3.3 km circuit**, reverse gear, an orbiting garage camera, and four modes. It runs as a desktop game; the browser edition remains playable online.
+
+[**Play the web edition →**](https://vertex-blip.github.io/neon-drift/) · [**Open the Godot project →**](godot/project.godot) · [**See art credits →**](godot/CREDITS.md)
+
+![Native Godot garage with the Lamborghini Revuelto](godot/docs/godot-garage.png)
+
+## Godot edition
+
+| Mode | Goal |
+| --- | --- |
+| Time Attack | Two ordered laps through 24 gates. |
+| Drift Session | Build a drift score in 90 seconds. |
+| Coast Run | Complete one lap through 24 gates. |
+| Free Drive | Drive the coast without a time limit. |
+
+The garage lets you switch among ten detailed models, choose a paint finish, and drag with a mouse or finger to rotate the view. Driving supports keyboard, gamepad and landscape touch controls. Reverse engages by holding brake after stopping. The native version includes handbrake slip, tyre smoke, brake lights, chase cameras, local records, and synthesized engine, wind and tyre audio.
+
+To run from source, open [`godot/project.godot`](godot/project.godot) in **Godot 4.7.2** and press **F6** or **F5**. The project has Windows and Android export presets. The Android preset is prepared but an APK has not been tested on a physical device.
+
+| Native control | Action |
+| --- | --- |
+| W / ↑ | Accelerate |
+| S / ↓ | Brake, then reverse at a stop |
+| A, D / ←, → | Steer |
+| Space | Handbrake |
+| R | Recover to road |
+| C | Switch camera |
+| Esc | Pause |
+| Drag car in garage | Rotate showroom camera |
+
+The 3D car models and scenery have individual **CC BY 4.0** attributions in [Godot credits](godot/CREDITS.md). The terrain and sky textures are from Poly Haven under CC0. This is an independent arcade game; its current handling and synthesized audio are not a calibrated driving simulator or recordings of the named cars.
+
+## Browser edition
 
 A playable, open-source 3D browser racing game. Drive a detailed convertible around an original coastal circuit at golden hour. Chase a clean two-lap time or spend 90 seconds linking slides.
 
@@ -8,7 +42,7 @@ A playable, open-source 3D browser racing game. Drive a detailed convertible aro
 
 ![Neon Drift — the coastal garage](docs/garage.png)
 
-## The drive
+## The web drive
 
 | Mode | Objective |
 | --- | --- |
@@ -75,7 +109,7 @@ docs/          Actual browser captures and verification notes
 
 ## Scope and performance
 
-This is an independent arcade time trial, with one circuit and one vehicle. It is not a licensed automotive simulator. It has no online multiplayer, traffic, vehicle damage simulation or career campaign. The handling and engine sound are designed for the game, not calibrated to a real Ferrari.
+The web edition has one circuit and one vehicle. The Godot edition expands the garage, circuit and modes. Neither edition has online multiplayer, traffic, vehicle damage simulation or a career campaign.
 
 Select **Quality: light** if the GPU struggles; it reduces render resolution and disables shadows and bloom. Mobile controls are included, but the best visual experience is on a desktop GPU. A first load downloads the locally hosted art assets; this release does not install an offline service worker. If browser storage is disabled, play still works but records may not persist.
 

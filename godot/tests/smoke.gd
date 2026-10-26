@@ -1,0 +1,63 @@
+extends SceneTree
+
+func _initialize() -> void:
+	call_deferred("run_checks")
+
+func run_checks() -> void:
+	var scene: PackedScene = load("res://scenes/game.tscn")
+	var game: Node3D = scene.instantiate()
+	root.add_child(game)
+	await process_frame
+	assert(game.get("phase") == "menu", "Menu should open")
+	assert(game.get("track").samples.size() == 1024, "Expanded native track should load")
+	assert(game.get("cars").size() == 10, "All ten licensed cars should load")
+	assert(game.get("vehicle_model") != null, "Detailed car model should load")
+	var down := InputEventMouseButton.new()
+	down.button_index = MOUSE_BUTTON_LEFT
+	down.position = Vector2(800,400)
+	down.pressed = true
+	game.call("_input",down)
+	var drag := InputEventMouseMotion.new()
+	drag.relative = Vector2(100,0)
+	game.call("_input",drag)
+	assert(absf(game.get("garage_orbit")) > 0.5, "Garage drag should orbit the camera")
+	game.call("_start")
+	assert(game.get("phase") == "countdown", "Starting should begin countdown")
+	game.call("_resume")
+	Input.action_press("accelerate")
+	for i in range(70):
+		game.call("_physics_process",1.0/60.0)
+	Input.action_release("accelerate")
+	var velocity: float = game.get("speed")
+	print("smoke motion speed=%.2f position=%s" % [velocity,str(game.get("car_root").position)])
+	assert(velocity > 10.0, "Throttle should accelerate the native car")
+	Input.action_press("brake")
+	for i in range(210):
+		game.call("_physics_process",1.0/60.0)
+	Input.action_release("brake")
+	assert(game.get("velocity").dot(Vector3(sin(game.get("heading")),0,cos(game.get("heading")))) < -0.5, "Brake should engage reverse at a stop")
+	assert(game.get("race_time") > 1.1, "Native race clock should advance")
+	game.call("_recover")
+	assert(game.get("penalty") == 3.0, "Recovery should add 3 seconds")
+	game.call("_set_mode","drift")
+	game.call("_start")
+	game.call("_resume")
+	game.set("race_time",89.99)
+	game.call("_step_race",0.02)
+	assert(game.get("phase") == "finished", "Drift session should finish at 90 seconds")
+	game.call("_set_mode","coast")
+	game.call("_start")
+	game.call("_resume")
+	for gate in range(1,25):
+		var index: int = game.get("track").gate_index(gate % 24)
+		game.get("car_root").position = game.get("track").point(index)
+		game.set("velocity",game.get("track").tangent(index)*5.0)
+		game.call("_step_race",0.1)
+	assert(game.get("phase") == "finished", "Coast Run should complete after one ordered lap")
+	game.call("_set_mode","free")
+	game.call("_start")
+	game.call("_resume")
+	game.call("_step_race",220.0)
+	assert(game.get("phase") == "racing", "Free Drive should stay open")
+	print("NEON_SMOKE_PASS speed=%.1f time=%.2f" % [velocity,game.get("race_time")])
+	quit(0)

@@ -1,0 +1,262 @@
+[
+  {
+    "id": "alfa-romeo-4c",
+    "brand": "Alfa Romeo",
+    "model": "4C",
+    "years": [
+      2000,
+      2024
+    ],
+    "category": "sports",
+    "file": "alfa-romeo-4c.glb",
+    "bytes": 1392352,
+    "paint": {
+      "materials": [
+        "CAR_BODY_PAINT"
+      ],
+      "textured": true,
+      "confidence": "alta"
+    },
+    "credit": {
+      "author": "Mona x Supercars",
+      "authorUrl": "https://sketchfab.com/Car2022",
+      "license": "CC Attribution",
+      "sourceName": "Alfa Romeo 4C",
+      "sourceUrl": "https://sketchfab.com/3d-models/93da1386a94744c5bd8a676a09f9d4e9"
+    }
+  },
+  {
+    "id": "aston-martin-vantage",
+    "brand": "Aston Martin",
+    "model": "Vantage",
+    "years": [
+      2000,
+      2024
+    ],
+    "category": "sports",
+    "file": "aston-martin-vantage.glb",
+    "bytes": 1810456,
+    "paint": {
+      "materials": [
+        "Coloured"
+      ],
+      "textured": false,
+      "confidence": "alta"
+    },
+    "credit": {
+      "author": "vecarz",
+      "authorUrl": "https://sketchfab.com/heynic",
+      "license": "CC Attribution",
+      "sourceName": "Aston Martin Vantage Roadster | www.vecarz.com",
+      "sourceUrl": "https://sketchfab.com/3d-models/dbdd5aadc1d64df289f65fc0f6da3c07"
+    }
+  },
+  {
+    "id": "audi-r8",
+    "brand": "Audi",
+    "model": "R8",
+    "years": [
+      0,
+      0
+    ],
+    "category": "coupe",
+    "file": "audi-r8.glb",
+    "bytes": 4776028,
+    "paint": {
+      "materials": [
+        "body"
+      ],
+      "textured": false,
+      "confidence": "média"
+    },
+    "credit": {
+      "author": "wallon",
+      "authorUrl": "https://sketchfab.com/realwallon",
+      "license": "CC Attribution",
+      "sourceName": "Audi R8",
+      "sourceUrl": "https://sketchfab.com/3d-models/none-e17e438f076f4427a58d93aa779edaed"
+    }
+  },
+  {
+    "id": "bmw-i8",
+    "brand": "BMW",
+    "model": "i8",
+    "years": [
+      2000,
+      2024
+    ],
+    "category": "sports",
+    "file": "bmw-i8.glb",
+    "bytes": 2715356,
+    "paint": {
+      "materials": [
+        "bBMW_i8Elite_2017Coloured_Material1"
+      ],
+      "textured": true,
+      "confidence": "alta"
+    },
+    "credit": {
+      "author": "vecarz",
+      "authorUrl": "https://sketchfab.com/heynic",
+      "license": "CC Attribution",
+      "sourceName": "BMW i8 XS 2015 | www.vecarz.com",
+      "sourceUrl": "https://sketchfab.com/3d-models/b7108d20560c43e2b0a2d1473b311cfb"
+    }
+  },
+  {
+    "id": "porsche-911",
+    "brand": "Porsche",
+    "model": "911 Turbo",
+    "years": [
+      1975,
+      1989
+    ],
+    "category": "sports",
+    "file": "porsche-911.glb",
+    "bytes": 2383144,
+    "paint": {
+      "materials": [
+        "Material.002"
+      ],
+      "textured": false,
+      "confidence": "alta"
+    },
+    "credit": {
+      "author": "Lexyc16",
+      "authorUrl": "https://sketchfab.com/Lexyc16",
+      "license": "CC Attribution",
+      "sourceName": "Porsche 911 (930) Turbo 1975",
+      "sourceUrl": "https://sketchfab.com/3d-models/de1ffd344c41481892511f7fd332c136"
+    }
+  },
+  {
+    "id": "nissan-gt-r",
+    "brand": "Nissan",
+    "model": "GT-R",
+    "years": [
+      2000,
+      2024
+    ],
+    "category": "sports",
+    "file": "nissan-gt-r.glb",
+    "bytes": 3093060,
+    "paint": {
+      "materials": [
+        "Material.001"
+      ],
+      "textured": false,
+      "confidence": "alta"
+    },
+    "credit": {
+      "author": "Lexyc16",
+      "authorUrl": "https://sketchfab.com/Lexyc16",
+      "license": "CC Attribution",
+      "sourceName": "Nissan Skyline R34 GT-R",
+      "sourceUrl": "https://sketchfab.com/3d-models/ff8fb2251dfa4bb9979e7022c5a6666c"
+    }
+  },
+  {
+    "id": "mazda-rx-7",
+    "brand": "Mazda",
+    "model": "RX-7",
+    "years": [
+      0,
+      0
+    ],
+    "category": "coupe",
+    "file": "mazda-rx-7.glb",
+    "bytes": 3934592,
+    "paint": {
+      "materials": [
+        "Car_body"
+      ],
+      "textured": false,
+      "confidence": "média"
+    },
+    "credit": {
+      "author": "wallon",
+      "authorUrl": "https://sketchfab.com/realwallon",
+      "license": "CC Attribution",
+      "sourceName": "Mazda RX-7",
+      "sourceUrl": "https://sketchfab.com/3d-models/none-45cb02e634ed477a9a04bb19813443f2"
+    }
+  },
+  {
+    "id": "ferrari-488",
+    "brand": "Ferrari",
+    "model": "488",
+    "years": [
+      2000,
+      2024
+    ],
+    "category": "sports",
+    "file": "ferrari-488.glb",
+    "bytes": 2215656,
+    "paint": {
+      "materials": [
+        "GREEN_car_paint"
+      ],
+      "textured": false,
+      "confidence": "alta"
+    },
+    "credit": {
+      "author": "Dev365TH",
+      "authorUrl": "https://sketchfab.com/dev365th",
+      "license": "CC Attribution",
+      "sourceName": "Ferrari 488 Pista Widebody",
+      "sourceUrl": "https://sketchfab.com/3d-models/16c28f5b3ed24991ac3d1208f4a8bc1f"
+    }
+  },
+  {
+    "id": "lamborghini-revuelto",
+    "brand": "Lamborghini",
+    "model": "Revuelto",
+    "years": [
+      0,
+      0
+    ],
+    "category": "coupe",
+    "file": "lamborghini-revuelto.glb",
+    "bytes": 2955328,
+    "paint": {
+      "materials": [
+        "Body"
+      ],
+      "textured": false,
+      "confidence": "média"
+    },
+    "credit": {
+      "author": "ALIEEEN",
+      "authorUrl": "https://sketchfab.com/ALIEEEN",
+      "license": "CC Attribution",
+      "sourceName": "Free Lamborghini Revuelto",
+      "sourceUrl": "https://sketchfab.com/3d-models/none-cf52245eb68f48daa909c7ad2a8deaa3"
+    }
+  },
+  {
+    "id": "toyota-ae86",
+    "brand": "Toyota",
+    "model": "Corolla AE86",
+    "years": [
+      1983,
+      1987
+    ],
+    "category": "coupe",
+    "file": "toyota-ae86.glb",
+    "bytes": 1520588,
+    "paint": {
+      "materials": [
+        "Material.002"
+      ],
+      "textured": false,
+      "confidence": "alta"
+    },
+    "credit": {
+      "author": "Lexyc16",
+      "authorUrl": "https://sketchfab.com/Lexyc16",
+      "license": "CC Attribution",
+      "sourceName": "Toyota Corolla AE86 Trueno",
+      "sourceUrl": "https://sketchfab.com/3d-models/fe02fba6302e450ea8424591493341ea"
+    }
+  }
+]
