@@ -6,6 +6,7 @@ func _initialize() -> void:
 func capture() -> void:
 	var scene: PackedScene = load("res://scenes/game.tscn")
 	var game: Node3D = scene.instantiate()
+	game.set("persistence_enabled",false)
 	root.add_child(game)
 	game.call("_select_car",8)
 	for i in range(90):

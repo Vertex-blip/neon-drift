@@ -6,6 +6,7 @@ func _initialize() -> void:
 func run_checks() -> void:
 	var scene: PackedScene = load("res://scenes/game.tscn")
 	var game: Node3D = scene.instantiate()
+	game.set("persistence_enabled",false)
 	root.add_child(game)
 	await process_frame
 	assert(game.get("phase") == "menu", "Menu should open")

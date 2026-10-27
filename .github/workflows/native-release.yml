@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - ".github/workflows/native-release.yml"
+      - "godot/**"
 
 permissions:
   contents: write
@@ -23,6 +24,10 @@ jobs:
           chmod +x Godot_v4.7.2-stable_linux.x86_64
       - name: Import source assets
         run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path godot --editor --quit
+      - name: Check driving and interface
+        run: |
+          ./Godot_v4.7.2-stable_linux.x86_64 --headless --path godot --script res://tests/smoke.gd
+          ./Godot_v4.7.2-stable_linux.x86_64 --headless --path godot --script res://tests/ui_regression.gd
       - name: Package playable Windows build
         run: |
           mkdir -p dist
@@ -34,4 +39,6 @@ jobs:
       - name: Attach archive to release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload v0.2.0-native-preview dist/NeonDrift-Windows.zip --clobber
+        run: |
+          gh release view v0.2.1-native-fixes || gh release create v0.2.1-native-fixes --target "${{ github.sha }}" --prerelease --title "Neon Drift 0.2.1 — Driving and UI Fixes" --notes-file godot/docs/RELEASE-0.2.1.md
+          gh release upload v0.2.1-native-fixes dist/NeonDrift-Windows.zip --clobber

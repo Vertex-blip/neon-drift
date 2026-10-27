@@ -4,11 +4,13 @@
 
 The native Godot edition now has **10 licensed 3D cars**, a **3.3 km circuit**, reverse gear, an orbiting garage camera, and four modes. It runs as a desktop game; the browser edition remains playable online.
 
-[**Play on phone or browser →**](https://vertex-blip.github.io/neon-drift/) · [**Download Windows game →**](https://github.com/Vertex-blip/neon-drift/releases/download/v0.2.0-native-preview/NeonDrift-Windows.zip) · [**Open Godot source →**](godot/project.godot)
+[**Play on phone or browser →**](https://vertex-blip.github.io/neon-drift/) · [**Download Windows game →**](https://github.com/Vertex-blip/neon-drift/releases/download/v0.2.1-native-fixes/NeonDrift-Windows.zip) · [**Open Godot source →**](godot/project.godot)
 
 ![Native Godot garage with the Lamborghini Revuelto](godot/docs/godot-garage.png)
 
 ## Godot edition
+
+**Version 0.2.1:** corrected all ten car directions, restored the km/h and gear display, centered pause/results menus, and fixed HUD placement on resized windows. [Release notes](godot/docs/RELEASE-0.2.1.md).
 
 | Mode | Goal |
 | --- | --- |

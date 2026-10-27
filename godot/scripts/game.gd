@@ -52,12 +52,20 @@ var best_coast := 0.0
 var best_drift := 0
 var selected_paint := Color("f06b37")
 var ui: CanvasLayer
+var ui_root: Control
 var menu: Control
 var hud: Control
 var paused: Control
 var results: Control
+var menu_column: VBoxContainer
+var sidebar: ColorRect
+var pause_panel: PanelContainer
+var result_panel: PanelContainer
+var speed_bg: ColorRect
+var hud_header: ColorRect
 var time_label: Label
 var speed_label: Label
+var gear_label: Label
 var lap_label: Label
 var objective_label: Label
 var score_label: Label
@@ -75,6 +83,7 @@ var gear_shift := 0.0
 var font_bold: Font
 var font_regular: Font
 var gpu_notice := false
+var persistence_enabled := true
 
 func _ready() -> void:
 	_rng_seed()
@@ -92,12 +101,15 @@ func _ready() -> void:
 	_make_audio()
 	_reset_car(14)
 	_show_menu()
-	get_viewport().size_changed.connect(_layout_touch)
+	get_viewport().size_changed.connect(_layout_ui)
+	call_deferred("_layout_ui")
 
 func _rng_seed() -> void:
 	seed(1994)
 
 func _load_save() -> void:
+	if not persistence_enabled:
+		return
 	var cfg := ConfigFile.new()
 	if cfg.load("user://neon-drift.cfg") == OK:
 		best_time = float(cfg.get_value("records","time",0.0))
@@ -108,6 +120,8 @@ func _load_save() -> void:
 		audio_enabled = bool(cfg.get_value("settings","audio",true))
 
 func _save() -> void:
+	if not persistence_enabled:
+		return
 	var cfg := ConfigFile.new()
 	cfg.set_value("records","time",best_time)
 	cfg.set_value("records","coast",best_coast)
@@ -213,7 +227,8 @@ func _select_car(index: int) -> void:
 	var bounds := _bounds(vehicle_model)
 	var size := bounds.size
 	var length_axis := size.x > size.z
-	var model_yaw := PI * 0.5 if length_axis else PI
+	# These car assets face +X or +Z in their local space. Match the game's +Z forward axis.
+	var model_yaw := -PI * 0.5 if length_axis else 0.0
 	vehicle_model.rotation.y = model_yaw
 	var factor: float = 4.6 / maxf(size.x,size.z)
 	vehicle_model.scale = Vector3.ONE * factor
@@ -264,6 +279,7 @@ func _ui_label(parent: Node, caption: String, size: int, color: Color, bold := f
 func _button(parent: Node, caption: String, callback: Callable, accent := false) -> Button:
 	var b := Button.new()
 	b.text = caption
+	b.focus_mode = Control.FOCUS_NONE
 	b.custom_minimum_size = Vector2(245,54)
 	b.add_theme_font_override("font",font_regular)
 	b.add_theme_font_size_override("font_size",17)
@@ -298,21 +314,24 @@ func _panel(parent: Node, width: float) -> PanelContainer:
 func _make_ui() -> void:
 	ui = CanvasLayer.new()
 	add_child(ui)
+	ui_root = Control.new()
+	ui.add_child(ui_root)
+	ui_root.size = get_viewport().get_visible_rect().size
+	ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	menu = Control.new()
+	ui_root.add_child(menu)
 	menu.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ui.add_child(menu)
 	var shade := ColorRect.new()
 	shade.color = Color(0.015,0.04,0.05,0.13)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	menu.add_child(shade)
-	var sidebar := ColorRect.new()
+	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	sidebar = ColorRect.new()
 	sidebar.color = Color(0.016,0.032,0.039,0.76)
-	sidebar.custom_minimum_size = Vector2(520,900)
-	sidebar.size = Vector2(520,900)
+	sidebar.size = Vector2(520,ui_root.size.y)
 	sidebar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	menu.add_child(sidebar)
-	var menu_column := VBoxContainer.new()
+	menu_column = VBoxContainer.new()
 	menu_column.position = Vector2(52,55)
 	menu_column.add_theme_constant_override("separation",8)
 	menu.add_child(menu_column)
@@ -356,31 +375,34 @@ func _make_ui() -> void:
 	_select_car(car_index)
 	_refresh_mode_buttons()
 	hud = Control.new()
+	ui_root.add_child(hud)
 	hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	ui.add_child(hud)
+	hud_header = ColorRect.new()
+	hud_header.color = Color(0.016,0.032,0.039,0.72)
+	hud_header.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hud.add_child(hud_header)
 	time_label = _ui_label(hud,"00:00.00",32,Color("fff5e9"),true)
 	time_label.position = Vector2(35,36)
 	objective_label = _ui_label(hud,"THE LAST LIGHT  /  TIME ATTACK",19,Color("fff5e9"))
-	objective_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	objective_label.position.y = 35
+	objective_label.position = Vector2(35,88)
 	lap_label = _ui_label(hud,"01 / 02",32,Color("fff5e9"),true)
-	lap_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	lap_label.position = Vector2(-205,35)
+	lap_label.position = Vector2(ui_root.size.x-220,35)
 	score_label = _ui_label(hud,"",23,Color("ffa77a"),true)
-	score_label.set_anchors_preset(Control.PRESET_CENTER_RIGHT)
-	score_label.position = Vector2(-230,0)
-	speed_label = _ui_label(hud,"000\nKM/H",68,Color("fff5e9"),true)
-	speed_label.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	speed_label.position = Vector2(-200,-160)
+	score_label.position = Vector2(ui_root.size.x-310,115)
+	speed_bg = ColorRect.new()
+	speed_bg.color = Color(0.016,0.032,0.039,0.82)
+	speed_bg.size = Vector2(252,152)
+	speed_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hud.add_child(speed_bg)
+	speed_label = _ui_label(hud,"000",80,Color("fff5e9"),true)
+	gear_label = _ui_label(hud,"KM/H  ·  D",21,Color("ffa77a"),true)
 	countdown_label = _ui_label(hud,"3",130,Color("fff7e8"),true)
-	countdown_label.set_anchors_preset(Control.PRESET_CENTER)
 	paused = Control.new()
+	ui_root.add_child(paused)
 	paused.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ui.add_child(paused)
-	var pause_panel := _panel(paused,370)
-	pause_panel.set_anchors_preset(Control.PRESET_CENTER)
-	pause_panel.position = Vector2(-185,-180)
+	_add_modal_shade(paused)
+	pause_panel = _panel(paused,370)
 	var pause_column := VBoxContainer.new()
 	pause_panel.add_child(pause_column)
 	_ui_label(pause_column,"ON YOUR TIME.",50,Color("f4eadb"),true)
@@ -389,11 +411,10 @@ func _make_ui() -> void:
 	_button(pause_column,"RESTART",_start)
 	_button(pause_column,"RETURN TO GARAGE",_show_menu)
 	results = Control.new()
+	ui_root.add_child(results)
 	results.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ui.add_child(results)
-	var result_panel := _panel(results,440)
-	result_panel.set_anchors_preset(Control.PRESET_CENTER)
-	result_panel.position = Vector2(-220,-180)
+	_add_modal_shade(results)
+	result_panel = _panel(results,440)
 	var result_column := VBoxContainer.new()
 	result_panel.add_child(result_column)
 	_ui_label(result_column,"SESSION COMPLETE",16,Color("ff9b72"))
@@ -403,7 +424,14 @@ func _make_ui() -> void:
 	touch_controls = Node2D.new()
 	ui.add_child(touch_controls)
 	_make_touch()
+	_layout_ui()
 	_show_ui()
+
+func _add_modal_shade(parent: Control) -> void:
+	var shade := ColorRect.new()
+	shade.color = Color(0.008,0.016,0.023,0.76)
+	parent.add_child(shade)
+	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 func _make_touch() -> void:
 	var image := Image.create(96,96,false,Image.FORMAT_RGBA8)
@@ -436,16 +464,45 @@ func _layout_touch() -> void:
 	for key in positions:
 		touch_controls.get_node(key).position = positions[key]
 
+func _layout_ui() -> void:
+	if ui_root == null:
+		return
+	var size := get_viewport().get_visible_rect().size
+	ui_root.size = size
+	var menu_height := menu_column.get_combined_minimum_size().y+80.0
+	var menu_scale := minf(1.0,minf(size.y/menu_height,(size.x*0.48)/520.0))
+	menu_column.scale = Vector2.ONE*menu_scale
+	menu_column.position = Vector2(52,40)*menu_scale
+	sidebar.size = Vector2(520*menu_scale+20,size.y)
+	garage_hint.position = Vector2(maxf(sidebar.size.x+24,size.x-330),36)
+	if hud != null:
+		hud_header.size = Vector2(size.x,154)
+		lap_label.position = Vector2(size.x-220,35)
+		score_label.position = Vector2(size.x-310,110)
+		var speed_y := 175.0 if OS.get_name() in ["Android","iOS"] else size.y-180.0
+		speed_bg.position = Vector2(size.x-278,speed_y)
+		speed_label.position = speed_bg.position+Vector2(20,8)
+		gear_label.position = speed_bg.position+Vector2(22,108)
+		countdown_label.position = Vector2(size.x*0.5-40,size.y*0.5-100)
+	if pause_panel != null:
+		pause_panel.size = pause_panel.get_combined_minimum_size()
+		pause_panel.position = (size-pause_panel.size)*0.5
+	if result_panel != null:
+		result_panel.size = result_panel.get_combined_minimum_size()
+		result_panel.position = (size-result_panel.size)*0.5
+	_layout_touch()
+
 func _show_ui() -> void:
 	menu.visible = phase == "menu"
-	hud.visible = phase in ["countdown","racing","paused"]
+	hud.visible = phase in ["countdown","racing"]
 	paused.visible = phase == "paused"
 	results.visible = phase == "finished"
-	touch_controls.visible = phase == "racing"
+	touch_controls.visible = phase == "racing" and OS.get_name() in ["Android","iOS"]
 	if garage_hint != null:
 		garage_hint.visible = phase == "menu"
 	if track != null:
 		track.show_gate(next_gate,phase == "racing" or phase == "countdown")
+	call_deferred("_layout_ui")
 
 func _set_mode(new_mode: String) -> void:
 	mode = new_mode
@@ -536,13 +593,13 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			garage_dragging = event.position.x > 520
+			garage_dragging = event.position.x > sidebar.size.x
 		else:
 			garage_dragging = false
 	elif event is InputEventMouseMotion and garage_dragging:
 		garage_orbit = wrapf(garage_orbit-event.relative.x*0.009,-PI,PI)
 	elif event is InputEventScreenTouch:
-		if event.pressed and event.position.x > 520 and garage_touch_index < 0:
+		if event.pressed and event.position.x > sidebar.size.x and garage_touch_index < 0:
 			garage_touch_index = event.index
 		elif not event.pressed and event.index == garage_touch_index:
 			garage_touch_index = -1
@@ -702,7 +759,9 @@ func _update_hud() -> void:
 	time_label.text = "FREE DRIVE" if mode == "free" else (_format_time(maxf(0,90-race_time)) if mode == "drift" else _format_time(race_time+penalty))
 	lap_label.text = "%02d / 02" % lap if mode == "sprint" else (str(int(score))+" PTS" if mode == "drift" else "OPEN COAST")
 	objective_label.text = "THE LAST LIGHT  /  %s" % {"sprint":"TIME ATTACK","drift":"DRIFT SESSION","coast":"COAST RUN","free":"FREE DRIVE"}[mode]
-	speed_label.text = "%03d\nKM/H  %s" % [int(speed*3.6),"R" if velocity.dot(Vector3(sin(heading),0,cos(heading))) < -0.5 else "D"]
+	speed_label.text = "%03d" % roundi(speed*3.6)
+	var reverse := velocity.dot(Vector3(sin(heading),0,cos(heading))) < -0.5
+	gear_label.text = "KM/H   ·   %s" % ("R" if reverse else "D%d" % clampi(1+int(speed/12),1,5))
 	score_label.text = "DRIFT +%d  × %.1f" % [int(score),combo] if drifting else ("CHECKPOINT %d / %d" % [RACE_GATES if next_gate == 0 else next_gate,RACE_GATES] if mode != "free" else "EXPLORE THE COAST")
 
 func _update_camera(delta: float, instant: bool) -> void:

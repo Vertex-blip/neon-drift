@@ -2,6 +2,7 @@ config_version=5
 
 [application]
 config/name="Neon Drift"
+config/version="0.2.1"
 run/main_scene="res://scenes/game.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/description="A coastal time attack and drift game."
